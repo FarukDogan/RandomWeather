@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">RandomWeather</string>
+    <string name="title_activity_maps">Map</string>
+
+    <string-array name="sehirler">
+        <item>Güncel Konum</item>
+        <item>ADANA</item>
+        <item>ADIYAMAN</item>
+        <item>AFYONKARAHISAR</item>
+        <item>AGRI</item>
+        <item>AKSARAY</item>
+        <item>AMASYA</item>
+        <item>ANKARA</item>
+        <item>ANTALYA</item>
+        <item>ARDAHAN</item>
+        <item>ARTVIN</item>
+        <item>AYDIN</item>
+        <item>BALIKESIR</item>
+        <item>BARTIN</item>
+        <item>BATMAN</item>
+        <item>BAYBURT</item>
+        <item>BILECIK</item>
+        <item>BINGOL</item>
+        <item>BITLIS</item>
+        <item>BOLU</item>
+        <item>BURDUR</item>
+        <item>BURSA</item>
+        <item>CANAKKALE</item>
+        <item>CANKIRI</item>
+        <item>CORUM</item>
+        <item>DENIZLI</item>
+        <item>DIYARBAKIR</item>
+        <item>DUZCE</item>
+        <item>EDIRNE</item>
+        <item>ELAZIG</item>
+        <item>ERZINCAN</item>
+        <item>ERZURUM</item>
+        <item>ESKISEHIR</item>
+        <item>GAZIANTEP</item>
+        <item>GIRESUN</item>
+        <item>GUMUSHANE</item>
+        <item>HAKKARI</item>
+        <item>HATAY</item>
+        <item>IGDIR</item>
+        <item>ISPARTA</item>
+        <item>ISTANBUL</item>
+        <item>IZMIR</item>
+        <item>KAHRAMANMARAS</item>
+        <item>KARABUK</item>
+        <item>KARAMAN</item>
+        <item>KARS</item>
+        <item>KASTAMONU</item>
+        <item>KAYSERI</item>
+        <item>KILIS</item>
+        <item>KIRIKKALE</item>
+        <item>KIRKLARELI</item>
+        <item>KIRSEHIR</item>
+        <item>KOCAELI</item>
+        <item>KONYA</item>
+        <item>KUTAHYA</item>
+        <item>MALATYA</item>
+        <item>MANISA</item>
+        <item>MARDIN</item>
+        <item>MERSIN</item>
+        <item>MUGLA</item>
+        <item>MUS</item>
+        <item>NEVSEHIR</item>
+        <item>NIGDE</item>
+        <item>ORDU</item>
+        <item>OSMANIYE</item>
+        <item>RIZE</item>
+        <item>SAKARYA</item>
+        <item>SAMSUN</item>
+        <item>SANLIURFA</item>
+        <item>SIIRT</item>
+        <item>SINOP</item>
+        <item>SIVAS</item>
+        <item>SIRNAK</item>
+        <item>TEKIRDAG</item>
+        <item>TOKAT</item>
+        <item>TRABZON</item>
+        <item>TUNCELI</item>
+        <item>USAK</item>
+        <item>VAN</item>
+        <item>YALOVA</item>
+        <item>YOZGAT</item>
+        <item>ZONGULDAK</item>
+        <item>TOKYO</item>
+        <item>BOSTON</item>
+        <item>BASEL</item>
+        <item>BERLIN</item>
+
+
+    </string-array>
+</resources>
