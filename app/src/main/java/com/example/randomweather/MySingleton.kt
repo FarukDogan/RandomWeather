@@ -1,6 +1,7 @@
 package com.example.randomweather
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.LruCache
@@ -37,7 +38,9 @@ class MySingleton private constructor(context: Context) {
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private var mInstance: MySingleton? = null
+        @SuppressLint("StaticFieldLeak")
         private var mCtx: Context? = null
 
         @Synchronized
