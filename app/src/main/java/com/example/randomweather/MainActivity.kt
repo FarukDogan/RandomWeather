@@ -7,8 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.CalendarContract
-import android.util.Log
+
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -20,12 +19,12 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
+
 import im.delight.android.location.SimpleLocation
 
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.spinner_tek_satir.*
+
 
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -34,7 +33,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
 
-    var tvSehir:TextView?=null
+    private var tvSehir: TextView? =null
      var location:SimpleLocation?=null
     var latitude:String?=null
     var longitude:String?=null
@@ -47,9 +46,12 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
         setContentView(R.layout.activity_main)
 
         //Maps Activityden gelen değerler boş değilse kordinatlarına göre oankisehirt fonksiyonumuza yolluyoruz
-        location= SimpleLocation(this)
+
         gelenlat =intent.getStringExtra("lat")
         gelenlog = intent.getStringExtra("log")
+
+
+
 
         if (gelenlat!=null){
             latitude=gelenlat
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
 
         //spinnerımızı ve spinner adapterimizi tanımlıyoruz
 
-        var spinnerAdapter=ArrayAdapter.createFromResource(this,R.array.sehirler,R.layout.spinner_tek_satir)
+        val spinnerAdapter=ArrayAdapter.createFromResource(this,R.array.sehirler,R.layout.spinner_tek_satir)
         spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
 
         spnSehirler.background.setColorFilter(resources.getColor(R.color.design_default_color_error),PorterDuff.Mode.SRC_ATOP)
@@ -73,7 +75,7 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
 
 
 
-    spnSehirler.setOnItemSelectedListener(this)
+        spnSehirler.setOnItemSelectedListener(this)
 
 
    spnSehirler.setSelection(1)
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
     }
     // herhangibi bi Item seçildiğinde ne yapacagımızı tanımlıyoruz
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        tvSehir=view as TextView
+       tvSehir=view as TextView?
 
 // konum almak için izin maps activiye yönlendiriş
           if (position ==0 ){
@@ -97,18 +99,16 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
                         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),60)
                     }else{
                        location=SimpleLocation(this)
-                        var intent =Intent(this,MapsActivity::class.java)
+                        val intent =Intent(this,MapsActivity::class.java)
                         startActivity(intent)
-
-
-
+                        
                     }
                 }
 //eğer spinnerdan bir item seçilirse guncel konum dışındakilerde şehre göre verileri getiriyoruz
             }else {
                 if (gelenlat==null){
-                    var secilenSehir =parent?.getItemAtPosition(position).toString()
-                    tvSehir=view as TextView
+                    val secilenSehir =parent?.getItemAtPosition(position).toString()
+                    tvSehir=view
                     verileriGetir(secilenSehir)
                 }else{
                     //eğer burda gelenlatı null a çevirmezsek döngüye girip sürekli maps activitye atar kontrolümüzü gelenlat a göre yaptığımız için
@@ -129,15 +129,12 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
 
         if (requestCode==60){
             if (grantResults.size> 0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                var intent =Intent(this,MapsActivity::class.java)
+                val intent =Intent(this,MapsActivity::class.java)
                 startActivity(intent)
-                //gelen kordinatları oanki şehir fonksiyonuna yolluyoruz
-                var gelenLat =intent.getStringExtra("lat")
-                var gelenLog = intent.getStringExtra("log")
 
-                oankiSehriGetir(gelenLat,gelenLog)
-                println(longitude)
-                println(latitude)
+
+
+
             }else {
                spnSehirler.setSelection(1)
                 Toast.makeText(this,"İzin Vermediğin için ne yazıkki seni metorolojiden mahrum bırakıyorum.",Toast.LENGTH_LONG).show()
@@ -150,20 +147,21 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
     private fun oankiSehriGetir(lat:String?,long:String?) {
 
 
-        val url= "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+long+"&appid=fe86144982b7b037b1ab92881151d764&lang=tr&units=metric"
-        var sehirAdi :String? =null
+        val url=
+            "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=fe86144982b7b037b1ab92881151d764&lang=tr&units=metric"
+        var sehirAdi :String?
         val havaDurumuObjeRequest2 = JsonObjectRequest(Request.Method.GET,url,null, object :Response.Listener<JSONObject>{
             @SuppressLint("UseCompatLoadingForDrawables")
             override fun onResponse(response: JSONObject?) {
 // volley kütüphanesiyle yapılan json array ve object tanımlamaları
-                var main = response?.getJSONObject("main")
-                var sicaklik =main?.getInt("temp")
+                val main = response?.getJSONObject("main")
+                val sicaklik =main?.getInt("temp")
                 sehirAdi = response?.getString("name")
-                tvSehir?.setText(sehirAdi)
+                tvSehir?.text=sehirAdi
 
-                var weather =response?.getJSONArray("weather")
-                var aciklama = weather?.getJSONObject(0)?.getString("description")
-                var icon = weather?.getJSONObject(0)?.getString("icon")
+                val weather =response?.getJSONArray("weather")
+                val aciklama = weather?.getJSONObject(0)?.getString("description")
+                val icon = weather?.getJSONObject(0)?.getString("icon")
                 //gelen icon verisine göre gecemi gündüz mü oldugunu anlayıp görünümü değiştiriyoruz
                 if(icon?.last()=='d'){
                     rootLayout.background=getDrawable(R.drawable.bg)
@@ -184,7 +182,7 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
 
 
                 }
-                var resimDosyaAdi =resources.getIdentifier("icon_"+icon?.sonKarakteriSil(),"drawable",packageName)
+                val resimDosyaAdi =resources.getIdentifier("icon_"+icon?.sonKarakteriSil(),"drawable",packageName)
                 imgSembol.setImageResource(resimDosyaAdi)
 
                 tvTarih.text= tarihYazdir()
@@ -199,6 +197,7 @@ class MainActivity : AppCompatActivity(),AdapterView.OnItemSelectedListener{
 
         },object :Response.ErrorListener{
             override fun onErrorResponse(error: VolleyError?) {
+                println("oanki sehir tetiklendi hata")
 
             }
         })
@@ -217,17 +216,18 @@ println("oankisehri getir tetiklendi")
     }
 // aynı işlemleri lat longla değil şehir adıyla spinnerimizden aldıgımız verilerle yapıyoruz
     fun verileriGetir(sehir:String){
-        val url= "https://api.openweathermap.org/data/2.5/weather?q="+sehir+"&appid=fe86144982b7b037b1ab92881151d764&lang=tr&units=metric"
+        val url=
+            "https://api.openweathermap.org/data/2.5/weather?q=$sehir&appid=fe86144982b7b037b1ab92881151d764&lang=tr&units=metric"
         val havaDurumuObjeRequest = JsonObjectRequest(Request.Method.GET,url,null, object :Response.Listener<JSONObject>{
             @SuppressLint("UseCompatLoadingForDrawables")
             override fun onResponse(response: JSONObject?) {
 
-                var main = response?.getJSONObject("main")
-                var sicaklik =main?.getInt("temp")
-                var sehirAdi = response?.getString("name")
-                var weather =response?.getJSONArray("weather")
-                var aciklama = weather?.getJSONObject(0)?.getString("description")
-                var icon = weather?.getJSONObject(0)?.getString("icon")
+                val main = response?.getJSONObject("main")
+                val sicaklik =main?.getInt("temp")
+                val sehirAdi = response?.getString("name")
+                val weather =response?.getJSONArray("weather")
+                val aciklama = weather?.getJSONObject(0)?.getString("description")
+                val icon = weather?.getJSONObject(0)?.getString("icon")
                 if(icon?.last()=='d'){
                     rootLayout.background=getDrawable(R.drawable.bg)
                     tvTarih.setTextColor(resources.getColor(R.color.black))
@@ -247,11 +247,11 @@ println("oankisehri getir tetiklendi")
 
 
                 }
-                var resimDosyaAdi =resources.getIdentifier("icon_"+icon?.sonKarakteriSil(),"drawable",packageName)
+                val resimDosyaAdi =resources.getIdentifier("icon_"+icon?.sonKarakteriSil(),"drawable",packageName)
                 imgSembol.setImageResource(resimDosyaAdi)
 
                 tvTarih.text= tarihYazdir()
-                tvSehir?.setText(sehirAdi)
+                tvSehir?.text = sehirAdi
                 tvSicaklik.text=sicaklik.toString()
                 tvDurum.text=aciklama
 
@@ -272,9 +272,9 @@ println("oankisehri getir tetiklendi")
     }
 
     fun tarihYazdir(): String {
-        var takvim = Calendar.getInstance().time
-        var formatliyici = SimpleDateFormat("EEEE,MMM yyyy", Locale("tr"))
-        var tarih = formatliyici.format(takvim)
+        val takvim = Calendar.getInstance().time
+        val formatliyici = SimpleDateFormat("EEEE,MMM yyyy", Locale("tr"))
+        val tarih = formatliyici.format(takvim)
         return tarih
     }
 
@@ -285,7 +285,8 @@ private fun String.sonKarakteriSil(): String {
 
 }
     fun openMap(view:View){
-var intent =Intent(this,MapsActivity::class.java,)
+val intent =Intent(this,MapsActivity::class.java,)
         startActivity(intent)
+
     }
 }
